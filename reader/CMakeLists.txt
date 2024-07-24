@@ -9,6 +9,7 @@ set(WCH_DIR ${PROJECT_SOURCE_DIR}/3rdparty/WCH_Driver)
 
 if(WIN32)
   set(WCH_INCLUDE_DIR ${WCH_DIR}/windows)
+
   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     if(CMAKE_CL_64)
       # AMD64
@@ -32,6 +33,7 @@ elseif(UNIX AND NOT APPLE)
   else() # x64 default
     set(WCH_INCLUDE_DIR ${WCH_DIR}/linux/x64/dynamic)
   endif()
+
   find_library(CH341_LIBRARY NAMES ch347 PATHS ${WCH_INCLUDE_DIR} NO_DEFAULT_PATH)
 endif()
 
@@ -41,7 +43,7 @@ add_library(reader SHARED ${sources} ${IMU_DIR}/bmi160.c)
 target_include_directories(reader PUBLIC ${IMU_DIR} ${WCH_INCLUDE_DIR})
 
 if(CH341_LIBRARY)
-    target_link_libraries(reader ${CH341_LIBRARY})
+  target_link_libraries(reader ${CH341_LIBRARY})
 else()
-    message(FATAL_ERROR "Cannot find ch34x library")
+  message(FATAL_ERROR "Cannot find ch34x library")
 endif()

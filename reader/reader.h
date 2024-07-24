@@ -4,9 +4,14 @@
 #define READER_H
 
 #include "func.h"
-class ImuReader {
-public:
-  int getInt();
+class ImuReader
+{
+  private:
+    ch34x_dev wch_dev;
+    bmi160_dev bmi_dev;
+
+  public:
+    int getInt();
 };
 
 #endif

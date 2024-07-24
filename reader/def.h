@@ -1,11 +1,15 @@
 #pragma once
 
 #include <cstdint>
+
 #ifdef WINDOWS
 #include "CH341DLL.h"
 #elif defined(LINUX)
 #include "ch341_lib.h"
 #endif
+
+#include "bmi160.h"
+#include "bmi160_defs.h"
 
 #define CMD_FLASH_SECTOR_ERASE 0x20
 #define CMD_FLASH_BYTE_PROG 0x02
@@ -16,9 +20,26 @@
 
 #define SPI_FLASH_PerWritePageSize 256
 
-struct ch34x {
-  int fd;
-  char version[100];
-  CHIP_TYPE chiptype;
-  uint32_t dev_id;
+struct ch34x_dev
+{
+    int fd;
+    char version[100];
+    CHIP_TYPE chiptype;
+    uint32_t dev_id;
+};
+
+enum class I2C_Rate
+{
+    Low_20KHz = 0x00,       // 20KHz
+    Standard_100KHz = 0x01, // 100KHz
+    Fast_400KHz = 0x02,     // 400KHz
+    High_750KHz = 0x03      // 750KHz
+};
+
+enum class SPI_Mode
+{
+    OneInOut_LowBit = 0x00,  // one in one out, low bit first
+    OneInOut_HighBit = 0x80, // one in one out, high bit first
+    TwoInOut_LowBit = 0x04,  // two in two out, low bit first
+    TwoInOut_HighBit = 0x84  // two in two out, high bit first
 };
