@@ -1,9 +1,11 @@
 #pragma once
 
-#include <cstdint>
-
 #ifdef WINDOWS
-#include "CH341DLL.h"
+#include <windows.h>
+#endif
+#include <stdint.h>
+#ifdef WINDOWS
+#include "CH341DLL_EN.H"
 #elif defined(LINUX)
 #include "ch341_lib.h"
 #endif
