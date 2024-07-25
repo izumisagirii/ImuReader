@@ -1,13 +1,13 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #ifdef WINDOWS
 #include <windows.h>
 #endif
 #ifdef WINDOWS
 #include "CH341DLL_EN.H"
 
-typedef enum _CHIP_TYPE
+typedef enum CHIP_TYPE
 {
     CHIP_CH341 = 0,
     CHIP_CH347T = 1,
