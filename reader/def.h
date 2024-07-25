@@ -1,11 +1,19 @@
 #pragma once
 
+#include <stdint.h>
 #ifdef WINDOWS
 #include <windows.h>
 #endif
-#include <stdint.h>
 #ifdef WINDOWS
 #include "CH341DLL_EN.H"
+
+typedef enum _CHIP_TYPE
+{
+    CHIP_CH341 = 0,
+    CHIP_CH347T = 1,
+    CHIP_CH347F = 2,
+} CHIP_TYPE;
+
 #elif defined(LINUX)
 #include "ch341_lib.h"
 #endif

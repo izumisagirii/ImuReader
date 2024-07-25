@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12.0)
 project(imuReader VERSION 0.1.0 LANGUAGES C CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 
@@ -21,7 +22,7 @@ FetchContent_Declare(
 FetchContent_GetProperties(bmi160_sensor_api)
 
 if(NOT bmi160_sensor_api_POPULATED)
-  FetchContent_Populate(bmi160_sensor_api)
+  FetchContent_MakeAvailable(bmi160_sensor_api)
 endif()
 
 include_directories(./)
@@ -30,5 +31,3 @@ subdirs(
   reader
   rawSample
 )
-
-# target_link_libraries(imuReader PRIVATE some_library_from_bmi160_sensor_api)
