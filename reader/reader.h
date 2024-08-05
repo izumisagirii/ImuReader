@@ -8,7 +8,9 @@ class ImuReader
 {
   private:
     ch34x_dev wch_dev;
-    bmi160_dev bmi_dev;
+    bmi160_dev bmi160dev;
+    bmi160_sensor_data bmi160_accel;
+    bmi160_sensor_data bmi160_gyro;
 
   public:
     int getInt();

@@ -33,12 +33,12 @@ typedef enum CHIP_TYPE
 struct ch34x_dev
 {
     int fd;
-    char version[100];
+    char version[50];
     CHIP_TYPE chiptype;
     uint32_t dev_id;
 };
 
-enum class I2C_Rate
+enum class I2C_Rate : uint8_t
 {
     Low_20KHz = 0x00,       // 20KHz
     Standard_100KHz = 0x01, // 100KHz
@@ -46,7 +46,7 @@ enum class I2C_Rate
     High_750KHz = 0x03      // 750KHz
 };
 
-enum class SPI_Mode
+enum class SPI_Mode : uint8_t
 {
     OneInOut_LowBit = 0x00,  // one in one out, low bit first
     OneInOut_HighBit = 0x80, // one in one out, high bit first
