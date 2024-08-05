@@ -2,10 +2,14 @@
 
 #include <cstdint>
 #ifdef WINDOWS
+
 #include <windows.h>
+
 #endif
 #ifdef WINDOWS
 #include "CH341DLL_EN.H"
+#include <handleapi.h>
+
 
 typedef enum CHIP_TYPE
 {
@@ -14,8 +18,24 @@ typedef enum CHIP_TYPE
     CHIP_CH347F = 2,
 } CHIP_TYPE;
 
+struct ch34x_dev
+{
+    ULONG id;
+    HANDLE fd;
+    char version[50];
+    CHIP_TYPE chiptype;
+    uint32_t dev_id;
+};
+
 #elif defined(LINUX)
 #include "ch341_lib.h"
+struct ch34x_dev
+{
+    int fd;
+    char version[50];
+    CHIP_TYPE chiptype;
+    uint32_t dev_id;
+};
 #endif
 
 #include "bmi160.h"
@@ -29,14 +49,6 @@ typedef enum CHIP_TYPE
 #define CMD_FLASH_JEDEC_ID 0x9F
 
 #define SPI_FLASH_PerWritePageSize 256
-
-struct ch34x_dev
-{
-    int fd;
-    char version[50];
-    CHIP_TYPE chiptype;
-    uint32_t dev_id;
-};
 
 enum class I2C_Rate : uint8_t
 {
