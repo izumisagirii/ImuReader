@@ -1,7 +1,4 @@
 #include "func.h"
-#include <cstdint>
-#include <iostream>
-#include <string>
 
 int wch_init_dev(const char *pathname, ch34x_dev *dev)
 {
@@ -129,23 +126,6 @@ int wch_config_i2c(ch34x_dev *dev, I2C_Rate rate)
         std::cout << "I2CConfig error: Failed to set stream mode." << std::endl;
         return -1;
     }
-
-    // TEST
-    ULONG iIndex = 0;     // CH341 设备序号
-    UCHAR iDevice = 0x69; // BMI160 I2C 地址
-    UCHAR iAddr = 0x00;   // 芯片 ID 寄存器地址
-    UCHAR oByte;          // 用于存储读取的数据
-
-    BOOL result = CH341ReadI2C(iIndex, iDevice, iAddr, &oByte);
-    if (result)
-    {
-        printf("BMI160 Chip ID: 0x%02X\n", oByte);
-    }
-    else
-    {
-        printf("Failed to read from BMI160\n");
-    }
-
     return 0;
 #elif defined(LINUX)
     if (dev->fd < 0)
@@ -163,6 +143,113 @@ int wch_config_i2c(ch34x_dev *dev, I2C_Rate rate)
         return -1;
     }
     return 0;
+#endif
+    return -1;
+}
+
+int wch_test_i2c(ch34x_dev *dev)
+{
+#ifdef WINDOWS
+    if (dev->fd == INVALID_HANDLE_VALUE)
+    {
+        std::cout << "Device not open." << std::endl;
+        return -1;
+    }
+
+    ULONG iIndex = 0;
+    UCHAR iDevice = 0x69;
+    UCHAR iAddr = 0x00;
+    UCHAR oByte = 0xFF;
+
+    BOOL result = CH341ReadI2C(iIndex, iDevice, iAddr, &oByte);
+    if (result)
+    {
+        printf("BMI160 Chip ID: 0x%02X\n", oByte);
+    }
+    if (oByte == 0xD1)
+    {
+        std::cout << "Verification successful" << std::endl;
+    }
+    else
+    {
+        std::cout << "Verification failed" << std::endl;
+        return -1;
+    }
+
+    return 0;
+#elif defined(LINUX)
+    return -1;
+#endif
+    return -1;
+}
+
+void wch_delay_i2c(ch34x_dev *dev, uint32_t period)
+{
+
+#ifdef WINDOWS
+    CH341SetDelaymS(dev->id, period);
+#elif defined(LINUX)
+    CH34xSetDelaymS(dev->fd, period);
+#endif
+}
+
+int8_t wch_write_i2c(ch34x_dev *dev, uint8_t dev_addr, uint8_t reg_addr, uint8_t *write_data, uint16_t len)
+{
+#ifdef WINDOWS
+    ULONG iIndex = dev->id;
+    auto *writeBuffer = new UCHAR[len + 2];
+
+    writeBuffer[0] = dev_addr << 1; // device address
+    writeBuffer[1] = reg_addr;      // register address
+
+    // copy write data to buffer
+    memcpy(&writeBuffer[2], write_data, len);
+
+    // write data
+    BOOL result = CH341StreamI2C(iIndex, len + 2, writeBuffer, 0, nullptr);
+    delete[] writeBuffer;
+    if (!result)
+    {
+        return -1;
+    }
+
+    return 0;
+#elif defined(LINUX)
+    // TODO: Linux implementation
+    return -1;
+#endif
+    return -1;
+}
+
+int8_t wch_read_i2c(ch34x_dev *dev, uint8_t dev_addr, uint8_t reg_addr, uint8_t *read_data, uint16_t len)
+{
+#ifdef WINDOWS
+    ULONG iIndex = dev->id;
+    auto *writeBuffer = new UCHAR[2];
+    auto *readBuffer = new UCHAR[len];
+
+    writeBuffer[0] = (dev_addr << 1) | 1; // device address with read bit
+    writeBuffer[1] = reg_addr;            // register address
+
+    // read data
+    BOOL result = CH341StreamI2C(iIndex, 2, writeBuffer, len, readBuffer);
+    if (!result)
+    {
+        delete[] writeBuffer;
+        delete[] readBuffer;
+        return -1;
+    }
+
+    // copy read data to output buffer
+    memcpy(read_data, readBuffer, len);
+
+    delete[] writeBuffer;
+    delete[] readBuffer;
+
+    return 0;
+#elif defined(LINUX)
+    // TODO: Linux implementation
+    return -1;
 #endif
     return -1;
 }

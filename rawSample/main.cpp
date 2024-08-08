@@ -12,7 +12,7 @@ int main()
 #elif defined(LINUX)
     std::cout << "Running on Linux" << std::endl;
 #endif
-
-    std::cout << imuReader.getInt() << std::endl;
+    imuReader.init(0);
+    std::cout << imuReader.setSensorConfig() << std::endl;
     return 0;
 }

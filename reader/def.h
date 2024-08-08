@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
+#include <string>
+
 #ifdef WINDOWS
 
 #include <windows.h>
@@ -65,4 +68,34 @@ enum class SPI_Mode : uint8_t
     OneInOut_HighBit = 0x80, // one in one out, high bit first
     TwoInOut_LowBit = 0x04,  // two in two out, low bit first
     TwoInOut_HighBit = 0x84  // two in two out, high bit first
+};
+
+struct SensorConfig
+{
+    // Accelerometer configuration
+    uint8_t accel_odr;
+    uint8_t accel_range;
+    uint8_t accel_bw;
+    uint8_t accel_power;
+
+    // Gyroscope configuration
+    uint8_t gyro_odr;
+    uint8_t gyro_range;
+    uint8_t gyro_bw;
+    uint8_t gyro_power;
+};
+
+// Default configuration
+const SensorConfig defaultConfig = {
+    // Accelerometer configuration
+    BMI160_ACCEL_ODR_1600HZ,     // Output data rate
+    BMI160_ACCEL_RANGE_16G,      // Range
+    BMI160_ACCEL_BW_NORMAL_AVG4, // Bandwidth
+    BMI160_ACCEL_NORMAL_MODE,    // Power mode
+
+    // Gyroscope configuration
+    BMI160_GYRO_ODR_3200HZ,     // Output data rate
+    BMI160_GYRO_RANGE_2000_DPS, // Range
+    BMI160_GYRO_BW_NORMAL_MODE, // Bandwidth
+    BMI160_GYRO_NORMAL_MODE     // Power mode
 };
