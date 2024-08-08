@@ -154,9 +154,9 @@ int wch_config_i2c(ch34x_dev *dev, I2C_Rate rate)
         return -1;
     }
 
-    uint8_t mode = 0x80;
+    uint8_t mode = 0x02;
 
-    auto ret = CH34xSetStream(dev->fd, 0x00);
+    auto ret = CH34xSetStream(dev->fd, mode);
     if (ret == false)
     {
         std::cout << "I2CConfig error: Failed to set stream mode." << std::endl;

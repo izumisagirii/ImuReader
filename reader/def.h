@@ -10,7 +10,6 @@
 #include "CH341DLL_EN.H"
 #include <handleapi.h>
 
-
 typedef enum CHIP_TYPE
 {
     CHIP_CH341 = 0,
@@ -29,6 +28,8 @@ struct ch34x_dev
 
 #elif defined(LINUX)
 #include "ch341_lib.h"
+#include "ch347_lib.h"
+
 struct ch34x_dev
 {
     int fd;

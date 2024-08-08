@@ -39,7 +39,7 @@ endif()
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-add_library(reader STATIC ${sources} ${IMU_DIR}/bmi160.c)
+add_library(reader SHARED ${sources} ${IMU_DIR}/bmi160.c)
 target_include_directories(reader PUBLIC ${IMU_DIR} ${WCH_INCLUDE_DIR})
 
 if(CH341_LIBRARY)
