@@ -12,6 +12,7 @@
 #ifdef WINDOWS
 #include "CH341DLL_EN.H"
 #include <handleapi.h>
+#include <synchapi.h>
 
 typedef enum CHIP_TYPE
 {
@@ -85,7 +86,7 @@ struct SensorConfig
     uint8_t gyro_power;
 };
 
-// Default configuration
+//
 const SensorConfig defaultConfig = {
     // Accelerometer configuration
     BMI160_ACCEL_ODR_1600HZ,     // Output data rate
@@ -94,7 +95,7 @@ const SensorConfig defaultConfig = {
     BMI160_ACCEL_NORMAL_MODE,    // Power mode
 
     // Gyroscope configuration
-    BMI160_GYRO_ODR_3200HZ,     // Output data rate
+    BMI160_GYRO_ODR_1600HZ,     // Output data rate
     BMI160_GYRO_RANGE_2000_DPS, // Range
     BMI160_GYRO_BW_NORMAL_MODE, // Bandwidth
     BMI160_GYRO_NORMAL_MODE     // Power mode
